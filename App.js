@@ -1,16 +1,11 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
 } from 'react-native';
+import firebase from 'react-native-firebase';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -19,9 +14,23 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
-type Props = {};
-export default class App extends Component<Props> {
+export default class App extends Component {
   render() {
+    firebase.messaging().getToken()
+      .then((fcmToken) => {
+        console.log('Firebase token ', fcmToken);
+      });
+
+    firebase.messaging().hasPermission()
+      .then((enabled) => {
+        if (enabled) {
+          console.log('User has given Permission');
+        } else {
+          console.log('User has NOT given permission');
+        }
+      });
+
+
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
